@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { createStream } from "../../actions";
 import { Field, reduxForm } from "redux-form"; // Field is the component we'll be rendering onto the screen and reduxForm is a function that acts like connect.
 
 class StreamCreate extends React.Component {
@@ -25,9 +27,10 @@ class StreamCreate extends React.Component {
     );
   };
 
-  onSubmit(formValues) {
+  onSubmit = formValues => {
     // console.log(formValues); // gives all the form values of our form.
-  }
+    this.props.createStream(formValues);
+  };
 
   render() {
     // label is an unknown prop to the field component. since, it is unknown it is passed to the function this.renderInput where it is used to render the label for the field.
@@ -64,7 +67,12 @@ const validate = formValues => {
   return errors;
 };
 
-export default reduxForm({
+const formWrapped = reduxForm({
   form: "streamCreate",
   validate
 })(StreamCreate);
+
+export default connect(
+  null,
+  { createStream }
+)(formWrapped);
